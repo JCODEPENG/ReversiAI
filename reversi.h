@@ -10,10 +10,10 @@ typedef struct coords{
 class Reversi{
     private:
         int board[8][8]; 
-        int size;
 
     public:
         Reversi();
-        vector<int>* potentialMoves();
+        vector<moveCoords> potentialMoves();
+        void printPotentialMoves(vector<moveCoords> moves);
         void printBoard();
 };

@@ -13,7 +13,8 @@ Reversi::Reversi(){
         }
     }
 }
-vector<int>* Reversi::potentialMoves(){
+
+vector<moveCoords> Reversi::potentialMoves(){
     vector<moveCoords> moves;
     for (int i = 0; i < SIZE; i++){
         for (int j = 0; j < SIZE; j++){
@@ -24,6 +25,14 @@ vector<int>* Reversi::potentialMoves(){
                 moves.push_back(coords);
             }
         }
+    }
+    printPotentialMoves(moves);
+    return moves;
+}
+
+void Reversi::printPotentialMoves(vector<moveCoords> moves){
+    for (int i = 0; i < moves.size(); i++){
+        cout << "{" << moves[i].x << "," << moves[i].y << "}" << endl;
     }
 }
 

@@ -1,4 +1,4 @@
-CFLAGS = -Wall -g -Werror
+CFLAGS = -Wall -Werror
 
 all: build
 
