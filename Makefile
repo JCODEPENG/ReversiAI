@@ -11,4 +11,4 @@ run: build
 
 
 clean:
-	rm -f main.o reversi.o
+	rm out 
