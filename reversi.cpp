@@ -164,6 +164,13 @@ void Reversi::checkGameState(){
 
 bool Reversi::placePiece(int color, int x, int y){
     bool flag;
+    int opposite;
+    if (color == 1){
+        opposite = 2;
+    }
+    else{
+        opposite = 1;
+    }
     vector<moveCoords> availableMoves = potentialMoves(color, 1);
     for (int i = 0; i < availableMoves.size(); i++){
         if (availableMoves[i].x == x && availableMoves[i].y == y){
@@ -174,7 +181,102 @@ bool Reversi::placePiece(int color, int x, int y){
         return false;
     }
     else{
-        
+        //messes up here cause I'm not backtracking ie, if the neighbor is an opposite color 
+        //it will change it right away but we need to first check if its an opposite color
+        //and then keep checking if the next pieces in that direction will ever be the current 
+        //color... thennnn we can change the pieces in between.
+        //but what im doing is im changing the pieces as I go which is wrong.
+        board[x][y] = color;
+        if (board[x+1][y] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x+i][y] == color){
+                    break;
+                }
+                else{
+                    board[x+i][y] = color;
+                }
+            }
+        }
+        if(board[x-1][y] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x-i][y] == color){
+                    break;
+                }
+                else{
+                    board[x-i][y] = color;
+                }
+            }
+        }
+        if(board[x][y+1] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x][y+i] == color){
+                    break;
+                }
+                else{
+                    board[x][y+i] = color;
+                }
+            }
+        }
+        if (board[x][y-1]== opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x][y-i] == color){
+                    break;
+                }
+                else{
+                    board[x][y-i] = color;
+                }
+            }
+        }
+        if (board[x+1][y+1] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x+i][y+i] == color){
+                    break;
+                }
+                else{
+                    board[x+i][y+i] = color;
+                }
+            }
+        }
+        if (board[x-1][y+1] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x-i][y+i] == color){
+                    break;
+                }
+                else{
+                    board[x-i][y+i] = color;
+                }
+            }
+        }
+        if (board[x+1][y-1] == opposite){
+            int i = 1;
+            while (i < SIZE){
+                if (board[x+i][y-i] == color){
+                    break;
+                }
+                else{
+                    board[x+i][y-i] = color;
+                }
+            }
+        }
+        if (board[x-1][y-1] == opposite){
+            int i = 1;
+            cout << "satisfied" << endl;
+            while (i < SIZE){
+                if (board[x-i][y-i] == color){
+                    break;
+                }
+                else{
+                    board[x-i][y-i] = color;
+                }
+            }
+        }
+        return true;
     }
 
 }
