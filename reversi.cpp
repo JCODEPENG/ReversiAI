@@ -162,6 +162,23 @@ void Reversi::checkGameState(){
     blackChips = counter2;
 }
 
+bool Reversi::placePiece(int color, int x, int y){
+    bool flag;
+    vector<moveCoords> availableMoves = potentialMoves(color, 1);
+    for (int i = 0; i < availableMoves.size(); i++){
+        if (availableMoves[i].x == x && availableMoves[i].y == y){
+            flag = true;
+        }
+    }
+    if (!flag){
+        return false;
+    }
+    else{
+        
+    }
+
+}
+
 //checks if the board is filled
 bool Reversi::checkGameOver(){
     for (int i = 0; i < SIZE; i++){

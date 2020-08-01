@@ -16,6 +16,7 @@ class Reversi{
     public:
         Reversi();
         vector<moveCoords> potentialMoves(int color, int direction);
+        bool placePiece(int color, int x, int y);
         bool checkGameOver();
         void checkGameState();
         void printPotentialMoves(vector<moveCoords> moves);
