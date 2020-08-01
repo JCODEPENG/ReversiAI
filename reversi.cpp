@@ -126,6 +126,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
     return moves;
 }
 
+//just printing the coordinates of potential moves
 void Reversi::printPotentialMoves(vector<moveCoords> moves){
     cout<< "size is " << moves.size()<< endl;
     for (int i = 0; i < moves.size(); i++){
@@ -143,6 +144,7 @@ void Reversi::printBoard(){
     }
 }
 
+//checks the score for black and white pieces 
 void Reversi::checkGameState(){
     int counter1 = 0;
     int counter2 = 0; 
@@ -160,6 +162,7 @@ void Reversi::checkGameState(){
     blackChips = counter2;
 }
 
+//checks if the board is filled
 bool Reversi::checkGameOver(){
     for (int i = 0; i < SIZE; i++){
         for (int j = 0; j < SIZE; j++){
