@@ -57,67 +57,141 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
         }
 
         if (board[xCoord+1][yCoord] == opposite){
-            if (board[xCoord+2][yCoord] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord+2;
-                newCoords.y = yCoord;
-                moves.push_back(newCoords);
+            int x = xCoord+2;
+            while (x < SIZE){
+                if (board[x][yCoord] == color){
+                    break;
+                }
+                if (board[x][yCoord] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = yCoord;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                x++;
             }
         }
         if (board[xCoord-1][yCoord] == opposite){
-            if (board[xCoord-2][yCoord] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord-2;
-                newCoords.y = yCoord;
-                moves.push_back(newCoords);
+            int x = xCoord-2;
+            while (x >= 0){
+                if (board[x][yCoord] == color){
+                    break;
+                }
+                if (board[x][yCoord] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = yCoord;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                x--;
             }
+            
         }
         if (board[xCoord][yCoord+1] == opposite){
-            if (board[xCoord][yCoord+2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord;
-                newCoords.y = yCoord+2;
-                moves.push_back(newCoords);
+            int y = yCoord+2;
+            while (y < SIZE){
+                if (board[xCoord][y] == color){
+                    break;
+                }
+                if (board[xCoord][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = xCoord;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                y++;
             }
+            
         }
         if (board[xCoord][yCoord-1] == opposite){
-            if (board[xCoord][yCoord-2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord;
-                newCoords.y = yCoord-2;
-                moves.push_back(newCoords);
+            int y = yCoord-2;
+            while (y >= 0){
+                if (board[xCoord][y] == color){
+                    break;
+                }
+                if (board[xCoord][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = xCoord;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                y--;
             }
         }
         if (board[xCoord+1][yCoord+1] == opposite){
-            if (board[xCoord+2][yCoord+2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord+2;
-                newCoords.y = yCoord+2;
-                moves.push_back(newCoords);
+            int x = xCoord + 2;
+            int y = yCoord + 2;
+            while(x < SIZE && y < SIZE){
+                if (board[x][y] == color){
+                    break;
+                }
+                if (board[x][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                x++;
+                y++;
             }
         }
         if (board[xCoord+1][yCoord-1] == opposite){
-            if (board[xCoord+2][yCoord-2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord+2;
-                newCoords.y = yCoord-2;
-                moves.push_back(newCoords);
+            int x = xCoord + 2;
+            int y = yCoord - 2;
+            while(x < SIZE && y >= 0){
+                if (board[x][y] == color){
+                    break;
+                }
+                if (board[x][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);
+                    break;
+                }
+                x++;
+                y--;
             }
         }
         if (board[xCoord-1][yCoord-1] == opposite){
-            if (board[xCoord-2][yCoord-2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord-2;
-                newCoords.y = yCoord-2;
-                moves.push_back(newCoords);
+            int x = xCoord - 2;
+            int y = yCoord - 2;
+            while (x >= 0 && y >= 0){
+                if (board[x][y] == color){
+                    break;
+                }
+                if (board[x][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);                        
+                    break;
+                }
+                x--;
+                y--;
             }
         }
         if (board[xCoord-1][yCoord+1] == opposite){
-            if (board[xCoord-2][yCoord+2] == 0){
-                moveCoords newCoords;
-                newCoords.x = xCoord-2;
-                newCoords.y = yCoord+2;
-                moves.push_back(newCoords);
+            int x = xCoord - 2;
+            int y = yCoord + 2;
+            while (x >= 0 && y < SIZE){
+                if (board[x][y] == color){
+                    break;
+                }
+                if (board[x][y] == 0){
+                    moveCoords newCoords;
+                    newCoords.x = x;
+                    newCoords.y = y;
+                    moves.push_back(newCoords);                        
+                    break;
+                }
+                x--;
+                y++;
             }
         }
 
@@ -163,7 +237,7 @@ void Reversi::checkGameState(){
 }
 
 bool Reversi::placePiece(int color, int x, int y){
-    bool flag;
+    bool flag = false;
     int opposite;
     if (color == 1){
         opposite = 2;
@@ -185,83 +259,81 @@ bool Reversi::placePiece(int color, int x, int y){
         //it will change it right away but we need to first check if its an opposite color
         //and then keep checking if the next pieces in that direction will ever be the current 
         //color... thennnn we can change the pieces in between.
-        //but what im doing is im changing the pieces as I go which is wrong.
+        //but what im doing is im changing the pieces as I go when i search for the current color which is wrong.
         board[x][y] = color;
+        vector<int> directions;
         if (board[x+1][y] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x+i][y] == color){
+                    directions.push_back(0);
                     break;
                 }
-                else{
-                    board[x+i][y] = color;
-                }
+                i++;
             }
         }
         if(board[x-1][y] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x-i][y] == color){
+                    directions.push_back(1);
                     break;
                 }
-                else{
-                    board[x-i][y] = color;
-                }
+                i++;
+                
             }
         }
         if(board[x][y+1] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x][y+i] == color){
+                    directions.push_back(2);
                     break;
                 }
-                else{
-                    board[x][y+i] = color;
-                }
+                i++;
             }
         }
         if (board[x][y-1]== opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x][y-i] == color){
+                    directions.push_back(3);
                     break;
                 }
-                else{
-                    board[x][y-i] = color;
-                }
+                i++;
             }
         }
         if (board[x+1][y+1] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x+i][y+i] == color){
+                    directions.push_back(4);
                     break;
                 }
-                else{
-                    board[x+i][y+i] = color;
-                }
+                i++;
+                
             }
         }
         if (board[x-1][y+1] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x-i][y+i] == color){
+                    directions.push_back(5);
                     break;
                 }
-                else{
-                    board[x-i][y+i] = color;
-                }
+                i++;
+                
             }
         }
         if (board[x+1][y-1] == opposite){
             int i = 1;
             while (i < SIZE){
                 if (board[x+i][y-i] == color){
+                    directions.push_back(6);
                     break;
                 }
-                else{
-                    board[x+i][y-i] = color;
-                }
+                i++;
+                
             }
         }
         if (board[x-1][y-1] == opposite){
@@ -269,14 +341,119 @@ bool Reversi::placePiece(int color, int x, int y){
             cout << "satisfied" << endl;
             while (i < SIZE){
                 if (board[x-i][y-i] == color){
+                    directions.push_back(7);
                     break;
                 }
-                else{
-                    board[x-i][y-i] = color;
-                }
+                i++;
+                
             }
         }
+
+        for (int i = 0; i < directions.size(); i++){
+            if (directions[i] == 0){
+               
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x+i][y] == color){
+                        break;
+                    }
+                    else{
+                        board[x+i][y] = color;
+                    }
+                    i++;
+
+                }
+            }
+            else if (directions[i] == 1){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x-i][y] == color){
+                        break;
+                    }
+                    else{
+                        board[x-i][y] = color;
+                    }
+                    i++;
+
+                }
+            }
+            else if (directions[i] == 2){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x][y+i] == color){
+                        break;
+                    }
+                    else{
+                        board[x][y+i] = color;
+                    }
+                    i++;
+                }
+            }
+            else if (directions[i] == 3){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x][y-i] == color){
+                        break;
+                    }
+                    else{
+                        board[x][y-i] = color;
+                    }
+                    i++;
+                }
+            }
+            else if (directions[i] == 4){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x+i][y+i] == color){
+                        break;
+                    }
+                    else{
+                        board[x+i][y+i] = color;
+                    }
+                    i++;
+                }
+            }
+            else if (directions[i] == 5){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x-i][y+i] == color){
+                        break;
+                    }
+                    else{
+                        board[x-i][y+i] = color;
+                    }
+                    i++;
+                }
+            }
+            else if (directions[i] == 6){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x+i][y-i] == color){
+                        break;
+                    }
+                    else{
+                        board[x+i][y-i] = color;
+                    }
+                    i++;
+                }
+            }
+            else if (directions[i] == 7){
+                int i = 1;
+                while (i < SIZE){
+                    if (board[x-i][y-i] == color){
+                        break;
+                    }
+                    else{
+                        board[x-i][y-i] = color;
+                    }
+                    i++;
+                }
+            }
+        
+        }
+        
         return true;
+
     }
 
 }
