@@ -16,6 +16,7 @@ int main(){
         cout<< "y value: ";
         cin >> y;
         game.placePiece(turn,x,y);
+        cout << turn << endl;
         if (turn == 1){
             turn++;
         }
