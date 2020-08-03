@@ -15,8 +15,37 @@ int main(){
         cin >> x;
         cout<< "y value: ";
         cin >> y;
-        game.placePiece(turn,x,y);
-        cout << turn << endl;
+
+        bool skip = game.turnSkip(turn);
+        if (skip){
+            cout << "No moves, turn skipped" << endl;
+        }
+        else{
+            game.placePiece(turn,x,y);
+            cout << turn << endl;
+        }
+      
+        int gameEnd = game.checkGameOver();
+        int blackChips = game.getBlackChips();
+        int whiteChips = game.getWhiteChips();
+
+        cout << "black score: " << blackChips << endl;
+        cout << "white score: " << whiteChips << endl;
+        
+
+        if (gameEnd >= 0){
+            cout << "GAME OVER" << endl;
+            if (gameEnd == 1){
+                cout << "Black wins" << endl;
+            }
+            else if (gameEnd == 2){
+                cout << "White wins" << endl;
+            }
+            else{
+                cout << "TIE" << endl;
+            }
+            break;
+        }
         if (turn == 1){
             turn++;
         }
@@ -26,6 +55,7 @@ int main(){
         game.printBoard();
         
     }
+    
     
     
 }

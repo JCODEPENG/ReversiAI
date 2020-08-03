@@ -17,10 +17,11 @@ class Reversi{
         Reversi();
         vector<moveCoords> potentialMoves(int color, int direction);
         bool placePiece(int color, int x, int y);
-        bool checkGameOver();
+        int checkGameOver();
         void checkGameState();
         void printPotentialMoves(vector<moveCoords> moves);
         void printBoard();
+        bool turnSkip(int color);
         int getWhiteChips();
         int getBlackChips();
 };

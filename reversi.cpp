@@ -49,14 +49,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
     for (int i = 0; i < pieceLocations.size(); i++){
         int xCoord = pieceLocations[i].x;
         int yCoord = pieceLocations[i].y;
-        if (xCoord <= 0 || xCoord-1 <= 0 || xCoord >= SIZE-1 || xCoord+1 >= SIZE-1 ){
-            continue;
-        }
-        if (yCoord <= 0 || yCoord-1 <= 0 || yCoord >= SIZE-1 || yCoord+1 >= SIZE-1 ){
-            continue;
-        }
+        
 
-        if (board[xCoord+1][yCoord] == opposite){
+        if (xCoord+1 < SIZE && board[xCoord+1][yCoord] == opposite){
             int x = xCoord+2;
             while (x < SIZE){
                 if (board[x][yCoord] == color){
@@ -72,7 +67,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                 x++;
             }
         }
-        if (board[xCoord-1][yCoord] == opposite){
+        if (xCoord-1 >= 0 && board[xCoord-1][yCoord] == opposite){
             int x = xCoord-2;
             while (x >= 0){
                 if (board[x][yCoord] == color){
@@ -89,7 +84,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
             }
             
         }
-        if (board[xCoord][yCoord+1] == opposite){
+        if (yCoord+1 < SIZE && board[xCoord][yCoord+1] == opposite){
             int y = yCoord+2;
             while (y < SIZE){
                 if (board[xCoord][y] == color){
@@ -106,7 +101,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
             }
             
         }
-        if (board[xCoord][yCoord-1] == opposite){
+        if ( yCoord-1 >= 0 && board[xCoord][yCoord-1] == opposite){
             int y = yCoord-2;
             while (y >= 0){
                 if (board[xCoord][y] == color){
@@ -122,7 +117,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                 y--;
             }
         }
-        if (board[xCoord+1][yCoord+1] == opposite){
+        if (xCoord+1 < SIZE && yCoord+1 < SIZE && board[xCoord+1][yCoord+1] == opposite){
             int x = xCoord + 2;
             int y = yCoord + 2;
             while(x < SIZE && y < SIZE){
@@ -140,7 +135,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                 y++;
             }
         }
-        if (board[xCoord+1][yCoord-1] == opposite){
+        if (xCoord+1 < SIZE && yCoord-1 >= 0 && board[xCoord+1][yCoord-1] == opposite){
             int x = xCoord + 2;
             int y = yCoord - 2;
             while(x < SIZE && y >= 0){
@@ -158,7 +153,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                 y--;
             }
         }
-        if (board[xCoord-1][yCoord-1] == opposite){
+        if (xCoord-1 >= 0 && yCoord-1 >= 0 && board[xCoord-1][yCoord-1] == opposite){
             int x = xCoord - 2;
             int y = yCoord - 2;
             while (x >= 0 && y >= 0){
@@ -176,7 +171,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                 y--;
             }
         }
-        if (board[xCoord-1][yCoord+1] == opposite){
+        if (xCoord-1 >= 0 && yCoord+1 < SIZE && board[xCoord-1][yCoord+1] == opposite){
             int x = xCoord - 2;
             int y = yCoord + 2;
             while (x >= 0 && y < SIZE){
@@ -198,6 +193,14 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
     }
     printPotentialMoves(moves);
     return moves;
+}
+
+bool Reversi::turnSkip(int color){
+    vector <moveCoords> freeMoves = potentialMoves(color, 2);
+    if (freeMoves.size() == 0){
+        return true;
+    }
+    return false;
 }
 
 //just printing the coordinates of potential moves
@@ -232,9 +235,19 @@ void Reversi::checkGameState(){
             }
         }
     }
-    whiteChips = counter1;
-    blackChips = counter2;
+    blackChips = counter1;
+    whiteChips = counter2;
+   
 }
+
+int Reversi::getWhiteChips(){
+    return whiteChips;
+}
+
+int Reversi::getBlackChips(){
+    return blackChips;
+}
+
 
 bool Reversi::placePiece(int color, int x, int y){
     bool flag = false;
@@ -262,9 +275,10 @@ bool Reversi::placePiece(int color, int x, int y){
         //but what im doing is im changing the pieces as I go when i search for the current color which is wrong.
         board[x][y] = color;
         vector<int> directions;
-        if (board[x+1][y] == opposite){
+        cout << "Crash shakalaka" << endl;
+        if (x+1 < SIZE && board[x+1][y] == opposite){
             int i = 1;
-            while (i < SIZE){
+            while (x+i < SIZE){
                 if (board[x+i][y] == 0){
                     break;
                 }
@@ -275,9 +289,9 @@ bool Reversi::placePiece(int color, int x, int y){
                 i++;
             }
         }
-        if(board[x-1][y] == opposite){
+        if(x-1 >= 0 && board[x-1][y] == opposite){
             int i = 1;
-            while (i < SIZE){
+            while (x-i >= 0){
                 if (board[x-i][y] == 0){
                     break;
                 }
@@ -289,9 +303,9 @@ bool Reversi::placePiece(int color, int x, int y){
                 
             }
         }
-        if(board[x][y+1] == opposite){
+        if(y+1 < SIZE && board[x][y+1] == opposite){
             int i = 1;
-            while (i < SIZE){
+            while (y+i < SIZE){
                 if (board[x][y+i] == 0){
                     break;
                 }
@@ -302,9 +316,9 @@ bool Reversi::placePiece(int color, int x, int y){
                 i++;
             }
         }
-        if (board[x][y-1]== opposite){
+        if (y-1 >= 0 && board[x][y-1]== opposite){
             int i = 1;
-            while (i < SIZE){
+            while (y-i >= 0){
                 if (board[x][y-i] == 0){
                     break;
                 }
@@ -315,10 +329,10 @@ bool Reversi::placePiece(int color, int x, int y){
                 i++;
             }
         }
-        if (board[x+1][y+1] == opposite){
+        if (x+1 < SIZE && y+1 < SIZE && board[x+1][y+1] == opposite){
             cout << "bug here1" << endl;
             int i = 1;
-            while (i < SIZE){
+            while (x+i < SIZE && y+i < SIZE){
                 if (board[x+i][y+i] == 0){
                     break;
                 }
@@ -330,10 +344,10 @@ bool Reversi::placePiece(int color, int x, int y){
                 
             }
         }
-        if (board[x-1][y+1] == opposite){
+        if (x-1 >= 0 && y+1 < SIZE && board[x-1][y+1] == opposite){
             cout << "bug here4" << endl;
             int i = 1;
-            while (i < SIZE){
+            while (x-i >= 0 && y+i < SIZE){
                 if (board[x-i][y+i] == 0){
                     break;
                 }
@@ -345,10 +359,10 @@ bool Reversi::placePiece(int color, int x, int y){
                 
             }
         }
-        if (board[x+1][y-1] == opposite){
+        if (x+1 < SIZE && y-1 >= 0 && board[x+1][y-1] == opposite){
             cout << "bug here3" << endl;
             int i = 1;
-            while (i < SIZE){
+            while (x+i < SIZE && y-i >= 0){
                 if (board[x+i][y-i] == 0){
                     break;
                 }
@@ -360,11 +374,11 @@ bool Reversi::placePiece(int color, int x, int y){
                 
             }
         }
-        if (board[x-1][y-1] == opposite){
+        if (x-1 >= 0 && y-1 >=0 && board[x-1][y-1] == opposite){
             cout << "bug here2" << endl;
             int i = 1;
             cout << "satisfied" << endl;
-            while (i < SIZE){
+            while (x-i >= 0 && y-i >= 0){
                 if (board[x-i][y-i] == 0){
                     break;
                 }
@@ -383,7 +397,7 @@ bool Reversi::placePiece(int color, int x, int y){
             if (directions[i] == 0){
                
                 int i = 1;
-                while (i < SIZE){
+                while (x+i < SIZE){
                     if (board[x+i][y] == color){
                         break;
                     }
@@ -396,7 +410,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 1){
                 int i = 1;
-                while (i < SIZE){
+                while (x-i >= 0){
                     if (board[x-i][y] == color){
                         break;
                     }
@@ -409,7 +423,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 2){
                 int i = 1;
-                while (i < SIZE){
+                while (y+i < SIZE){
                     if (board[x][y+i] == color){
                         break;
                     }
@@ -421,7 +435,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 3){
                 int i = 1;
-                while (i < SIZE){
+                while (y-i >= 0){
                     if (board[x][y-i] == color){
                         break;
                     }
@@ -433,7 +447,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 4){
                 int i = 1;
-                while (i < SIZE){
+                while (x+i < SIZE && y+i < SIZE){
                     if (board[x+i][y+i] == color){
                         break;
                     }
@@ -445,7 +459,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 5){
                 int i = 1;
-                while (i < SIZE){
+                while (x-i >= 0 && y+i < SIZE){
                     if (board[x-i][y+i] == color){
                         break;
                     }
@@ -457,7 +471,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 6){
                 int i = 1;
-                while (i < SIZE){
+                while (x-i >= 0 && y+i < SIZE){
                     if (board[x+i][y-i] == color){
                         break;
                     }
@@ -469,7 +483,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 7){
                 int i = 1;
-                while (i < SIZE){
+                while (x-i >= 0 && y-i >= 0){
                     if (board[x-i][y-i] == color){
                         break;
                     }
@@ -489,13 +503,30 @@ bool Reversi::placePiece(int color, int x, int y){
 }
 
 //checks if the board is filled
-bool Reversi::checkGameOver(){
+int Reversi::checkGameOver(){
+    bool stop = true;
+    checkGameState();
+    
+    
     for (int i = 0; i < SIZE; i++){
         for (int j = 0; j < SIZE; j++){
             if (board[i][j] == 0){
-                return false;
+                stop = false;
             }
         }
     }
-    return true;
+    if (stop == true){
+        if (blackChips > whiteChips){
+            return 1;
+        }
+        else if (whiteChips > blackChips){
+            return 2;
+        }
+        else{
+            return 0;
+        }
+    }
+    else{
+        return -1;
+    }
 }
