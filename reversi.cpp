@@ -471,7 +471,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
             else if (directions[i] == 6){
                 int i = 1;
-                while (x-i >= 0 && y+i < SIZE){
+                while (x+i >= 0 && y-i < SIZE){
                     if (board[x+i][y-i] == color){
                         break;
                     }
