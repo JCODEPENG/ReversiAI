@@ -1,4 +1,8 @@
 #include <vector>
+#include <iostream>
+#define SIZE    8
+#define BLACK   1
+#define WHITE   2
 
 using namespace std;
 
@@ -7,15 +11,17 @@ typedef struct coords{
     int y;
 }moveCoords;
 
+typedef int reversi_board[8][8];
+
 class Reversi{
     private:
-        int board[8][8]; 
+        int board[8][8];
         int whiteChips;
         int blackChips;
-
     public:
         Reversi();
-        vector<moveCoords> potentialMoves(int color, int direction);
+        Reversi(reversi_board& board, int whiteChips, int blackChips);
+        vector<moveCoords> potentialMoves(int color);
         bool placePiece(int color, int x, int y);
         int checkGameOver();
         void checkGameState();
@@ -24,4 +30,5 @@ class Reversi{
         bool turnSkip(int color);
         int getWhiteChips();
         int getBlackChips();
+        reversi_board& getBoard();
 };

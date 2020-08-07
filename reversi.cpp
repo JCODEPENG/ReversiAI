@@ -1,8 +1,7 @@
 #include "reversi.h"
-#include <iostream>
-#include <vector>
+
 using namespace std;
-#define SIZE    8
+
 
 
 //initializing board
@@ -18,9 +17,28 @@ Reversi::Reversi(){
     board[4][3] = 2;
 }
 
+Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips) {
+    for(int i = 0; i < SIZE; i++) {
+        for(int j = 0; j < SIZE; j++) {
+            this->board[i][j] = board[i][j];
+        }
+    }
+    this->blackChips = blackChips;
+    this->whiteChips = whiteChips;
+}
+
+bool existsInPotential(int x, int y, vector<moveCoords> moves){
+    for (int i = 0; i < moves.size(); i++){
+        if (x == moves[i].x && y == moves[i].y){
+            return true;
+        }
+    }
+    return false;
+}
+
 //checking the potential moves depending on whose turn it is via int color
 //i think int direction is useless actually
-vector<moveCoords> Reversi::potentialMoves(int color, int direction){
+vector<moveCoords> Reversi::potentialMoves(int color){
     vector<moveCoords> pieceLocations;
     vector<moveCoords> moves;
     int opposite;
@@ -46,7 +64,7 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
    
 
     //go through all the pieces and check if two spots away is empty but 1 spot away is the opposite color
-    for (int i = 0; i < pieceLocations.size(); i++){
+    for (unsigned int i = 0; i < pieceLocations.size(); i++){
         int xCoord = pieceLocations[i].x;
         int yCoord = pieceLocations[i].y;
         
@@ -61,7 +79,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = yCoord;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 x++;
@@ -77,7 +97,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = yCoord;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 x--;
@@ -94,7 +116,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = xCoord;
                     newCoords.y = y;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 y++;
@@ -111,7 +135,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = xCoord;
                     newCoords.y = y;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 y--;
@@ -128,7 +154,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = y;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 x++;
@@ -146,7 +174,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = y;
-                    moves.push_back(newCoords);
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }
                     break;
                 }
                 x++;
@@ -164,7 +194,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = y;
-                    moves.push_back(newCoords);                        
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);
+                    }                        
                     break;
                 }
                 x--;
@@ -182,7 +214,9 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
                     moveCoords newCoords;
                     newCoords.x = x;
                     newCoords.y = y;
-                    moves.push_back(newCoords);                        
+                    if (!existsInPotential(newCoords.x, newCoords.y,moves)){
+                        moves.push_back(newCoords);                      
+                    }  
                     break;
                 }
                 x--;
@@ -191,12 +225,12 @@ vector<moveCoords> Reversi::potentialMoves(int color, int direction){
         }
 
     }
-    printPotentialMoves(moves);
+    // printPotentialMoves(moves);
     return moves;
 }
 
 bool Reversi::turnSkip(int color){
-    vector <moveCoords> freeMoves = potentialMoves(color, 2);
+    vector <moveCoords> freeMoves = potentialMoves(color);
     if (freeMoves.size() == 0){
         return true;
     }
@@ -248,6 +282,10 @@ int Reversi::getBlackChips(){
     return blackChips;
 }
 
+reversi_board& Reversi::getBoard() {
+    return board;
+}
+
 
 bool Reversi::placePiece(int color, int x, int y){
     bool flag = false;
@@ -258,7 +296,7 @@ bool Reversi::placePiece(int color, int x, int y){
     else{
         opposite = 1;
     }
-    vector<moveCoords> availableMoves = potentialMoves(color, 1);
+    vector<moveCoords> availableMoves = potentialMoves(color);
     for (int i = 0; i < availableMoves.size(); i++){
         if (availableMoves[i].x == x && availableMoves[i].y == y){
             flag = true;
@@ -275,7 +313,7 @@ bool Reversi::placePiece(int color, int x, int y){
         //but what im doing is im changing the pieces as I go when i search for the current color which is wrong.
         board[x][y] = color;
         vector<int> directions;
-        cout << "Crash shakalaka" << endl;
+        
         if (x+1 < SIZE && board[x+1][y] == opposite){
             int i = 1;
             while (x+i < SIZE){
@@ -330,7 +368,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
         }
         if (x+1 < SIZE && y+1 < SIZE && board[x+1][y+1] == opposite){
-            cout << "bug here1" << endl;
+           
             int i = 1;
             while (x+i < SIZE && y+i < SIZE){
                 if (board[x+i][y+i] == 0){
@@ -345,7 +383,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
         }
         if (x-1 >= 0 && y+1 < SIZE && board[x-1][y+1] == opposite){
-            cout << "bug here4" << endl;
+            
             int i = 1;
             while (x-i >= 0 && y+i < SIZE){
                 if (board[x-i][y+i] == 0){
@@ -360,7 +398,7 @@ bool Reversi::placePiece(int color, int x, int y){
             }
         }
         if (x+1 < SIZE && y-1 >= 0 && board[x+1][y-1] == opposite){
-            cout << "bug here3" << endl;
+           
             int i = 1;
             while (x+i < SIZE && y-i >= 0){
                 if (board[x+i][y-i] == 0){
@@ -375,25 +413,24 @@ bool Reversi::placePiece(int color, int x, int y){
             }
         }
         if (x-1 >= 0 && y-1 >=0 && board[x-1][y-1] == opposite){
-            cout << "bug here2" << endl;
+           
             int i = 1;
-            cout << "satisfied" << endl;
+            
             while (x-i >= 0 && y-i >= 0){
                 if (board[x-i][y-i] == 0){
                     break;
                 }
                 if (board[x-i][y-i] == color){
-                    cout << "bug here2.5" << endl;
+                    
                     directions.push_back(7);
                     break;
                 }
-                cout << board[x-i][y-i] << endl;
                 i++;
                 
             }
         }
 
-        for (int i = 0; i < directions.size(); i++){
+        for (unsigned int i = 0; i < directions.size(); i++){
             if (directions[i] == 0){
                
                 int i = 1;
@@ -515,6 +552,7 @@ int Reversi::checkGameOver(){
             }
         }
     }
+    
     if (stop == true){
         if (blackChips > whiteChips){
             return 1;
