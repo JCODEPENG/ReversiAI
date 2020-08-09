@@ -253,6 +253,7 @@ void Reversi::printBoard(){
         }
         cout<< endl;
     }
+    cout << endl;
 }
 
 //checks the score for black and white pieces 
@@ -271,7 +272,6 @@ void Reversi::checkGameState(){
     }
     blackChips = counter1;
     whiteChips = counter2;
-   
 }
 
 int Reversi::getWhiteChips(){

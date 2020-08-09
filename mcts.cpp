@@ -20,40 +20,65 @@ int MCTS::get_max_number_of_playouts() {
     return this->max_number_of_playouts;
 }
 
-int MCTS::randomPlayouts(Reversi game, int turn, int totalScore) {
-    
-    if(game.checkGameOver() >= 0) {
-        if (game.checkGameOver() == BLACK) {
-            return totalScore-=1; 
+int MCTS::randomPlayouts(Reversi game, int turn, int totalScore, int depth) {
+    depth++;
+
+    if(depth > 20) {
+        game.checkGameState();
+        if(game.getBlackChips() > game.getWhiteChips()) {
+            return totalScore-=1;
         }
-        else if (game.checkGameOver() == WHITE) {
+        else if(game.getBlackChips() < game.getWhiteChips()) {
             return totalScore+=1;
         }
         else {
             return totalScore;
         }
     }
+    
+    if(game.checkGameOver() >= 0) {
+        if (game.checkGameOver() == BLACK) {
+            cout << "returned (-1)" << endl;
+            return totalScore-=1;
+        }
+        else if (game.checkGameOver() == WHITE) {
+            cout << "returned (+1)" << endl;
+            return totalScore+=1;
+        }
+        else {
+            cout << "returned (0)" << endl;
+            return totalScore;
+        }
+    }
 
     if(game.potentialMoves(turn).size() == 0) {
         if(turn == WHITE) {
-            totalScore = randomPlayouts(game, BLACK, totalScore);
+            cout << "skip white" << endl;
+            totalScore = randomPlayouts(game, BLACK, totalScore, depth);
         }
         else {
-            totalScore = randomPlayouts(game, WHITE, totalScore);
+            cout << "skip black" << endl;
+            totalScore = randomPlayouts(game, WHITE, totalScore, depth);
         }
     }
     else {
-        for(unsigned int i = 0; i < game.potentialMoves(turn).size(); i++) {
+        for(unsigned int i = 0; i < 2; i++) {
             Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips());
             copy_game.placePiece(turn, game.potentialMoves(turn)[i].x, game.potentialMoves(turn)[i].y);
+            cout << "trace" << endl;
+            copy_game.printBoard();
+            cout << "trace2" << endl;
             if(turn == WHITE) {
-                totalScore = randomPlayouts(copy_game, BLACK, totalScore);
+                cout << "recusive call to black's turn" << endl;
+                totalScore = randomPlayouts(copy_game, BLACK, totalScore, depth);
             }
             else {
-                totalScore = randomPlayouts(copy_game, WHITE, totalScore);
+                cout << "recusive call to white's turn" << endl;
+                totalScore = randomPlayouts(copy_game, WHITE, totalScore, depth);
             }
         }   
     }
+    cout << "finished all potential moves so return" << endl;
     return totalScore;
 }
 
@@ -62,14 +87,13 @@ void MCTS::doMove(Reversi game) {
     vector<int> scores;
 
     for(int i = 0; i < 1; i++){
-        printf("move %d\n", i);
 
         Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips());
 
         copy_game.placePiece(WHITE, game.potentialMoves(WHITE)[i].x, game.potentialMoves(WHITE)[i].y);
-        
+        copy_game.printBoard();
     
-        int score = randomPlayouts(copy_game, BLACK, 0);
+        int score = randomPlayouts(copy_game, BLACK, 0, 0);
 
 
         scores.push_back(score);
