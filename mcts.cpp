@@ -18,6 +18,14 @@ MCTS::MCTS(int max_number_of_playouts) {
 
 int MCTS::randomPlayouts(Reversi game) {
 
+    int AI;
+    if(game.getTurn() == BLACK) {
+        AI = WHITE;
+    }
+    else {
+        AI = BLACK;
+    }
+
     queue<Reversi> playouts;
     playouts.push(game);
 
@@ -26,10 +34,7 @@ int MCTS::randomPlayouts(Reversi game) {
     while(!playouts.empty() && number_of_playouts < max_number_of_playouts) {
         Reversi currentGame = playouts.front();
         playouts.pop();
-
-        
-        number_of_playouts++;
-        cout << currentGame.potentialMoves(currentGame.getTurn()).size() << endl; 
+        number_of_playouts++; 
 
         for(int i = 0; i < currentGame.potentialMoves(currentGame.getTurn()).size(); i++) {
             Reversi copy_game(currentGame.getBoard(), currentGame.getWhiteChips(), currentGame.getBlackChips(), currentGame.getTurn());
@@ -38,11 +43,11 @@ int MCTS::randomPlayouts(Reversi game) {
             copy_game.switchTurn();
             copy_game.checkGameState();
         
-            
-            if(copy_game.checkGameOver() == WHITE) {
+
+            if(copy_game.checkGameOver() == AI) {
                 score++;
             }
-            if(copy_game.checkGameOver() == BLACK) {
+            if(copy_game.checkGameOver() == game.getTurn()) {
                 score--;
             }
             if(copy_game.checkGameOver() == -1) {
@@ -50,25 +55,32 @@ int MCTS::randomPlayouts(Reversi game) {
                  
             }
         }
-
-        
     }
     
-
     if(number_of_playouts >= max_number_of_playouts) {
         while(!playouts.empty()) {
             Reversi currentGame = playouts.front();
             playouts.pop();
-            cout << "THIS IS THE D" << endl;
-            currentGame.printBoard();
             currentGame.checkGameState();
-            cout << "BLACK CHIPS ARE " << currentGame.getBlackChips() << "whiteCHIPS ARE " << currentGame.getWhiteChips() << endl;
-            if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
-                score++;
+
+            if(AI == WHITE) {
+                if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
+                    score++;
+                }
+                if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
+                    score--;
+                }
             }
-            if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
-                score--;
+            else {
+                if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
+                    score++;
+                }
+                if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
+                    score--;
+                }
             }
+
+            
 
         }
     }
@@ -78,14 +90,13 @@ int MCTS::randomPlayouts(Reversi game) {
 }
 
  
-void MCTS::doMove(Reversi game) {
+moveCoords MCTS::doMove(Reversi game) {
     vector<int> scores;
 
     for(int i = 0; i < game.potentialMoves(game.getTurn()).size(); i++) {
         Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips(), game.getTurn());
         copy_game.placePiece(game.potentialMoves(game.getTurn())[i].x, game.potentialMoves(game.getTurn())[i].y);
         copy_game.switchTurn();
-        // copy_game.printBoard();
 
         int score = randomPlayouts(copy_game);
 
@@ -97,11 +108,11 @@ void MCTS::doMove(Reversi game) {
     for(int i = 0; i < scores.size(); i++) {
         cout << scores[i] << endl;
     }
+    cout << endl;
         
     int max_index_for_move = maxIndex(scores);
-        
-    game.placePiece(game.potentialMoves(game.getTurn())[max_index_for_move].x, game.potentialMoves(game.getTurn())[max_index_for_move].y);
+         
 
-    game.printBoard();
+    return game.potentialMoves(game.getTurn())[max_index_for_move];
 
 }

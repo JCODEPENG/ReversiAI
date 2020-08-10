@@ -9,5 +9,5 @@ class MCTS {
         int randomPlayouts(Reversi game);
     public:
         MCTS(int max_number_of_playouts = 100000);
-        void doMove(Reversi game);
+        moveCoords doMove(Reversi game);
 };
