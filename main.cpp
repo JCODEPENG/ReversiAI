@@ -7,7 +7,7 @@ int main(){
     game.printBoard();
     cout << &game << endl;
     
-    MCTS AIMonte;
+    MCTS AIMonte(50000);
 
     AIMonte.doMove(game);
     // game.printBoard();

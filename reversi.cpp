@@ -18,7 +18,7 @@ Reversi::Reversi(){
     this->turn = BLACK;
 }
 
-Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips) {
+Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips, int turn) {
     for(int i = 0; i < SIZE; i++) {
         for(int j = 0; j < SIZE; j++) {
             this->board[i][j] = board[i][j];
@@ -26,7 +26,7 @@ Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips) {
     }
     this->blackChips = blackChips;
     this->whiteChips = whiteChips;
-    this->turn = BLACK;
+    this->turn = turn;
 }
 
 bool existsInPotential(int x, int y, vector<moveCoords> moves){

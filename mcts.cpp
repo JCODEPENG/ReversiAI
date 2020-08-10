@@ -27,15 +27,18 @@ int MCTS::randomPlayouts(Reversi game) {
         Reversi currentGame = playouts.front();
         playouts.pop();
 
-        cout << "THIS IS THE EXPLORING BOARD" << endl;
-        currentGame.printBoard();
+        
         number_of_playouts++;
+        cout << currentGame.potentialMoves(currentGame.getTurn()).size() << endl; 
 
         for(int i = 0; i < currentGame.potentialMoves(currentGame.getTurn()).size(); i++) {
-            Reversi copy_game(currentGame.getBoard(), currentGame.getWhiteChips(), currentGame.getBlackChips());
+            Reversi copy_game(currentGame.getBoard(), currentGame.getWhiteChips(), currentGame.getBlackChips(), currentGame.getTurn());
             copy_game.placePiece(currentGame.potentialMoves(currentGame.getTurn())[i].x, currentGame.potentialMoves(currentGame.getTurn())[i].y);
+            
             copy_game.switchTurn();
-
+            copy_game.checkGameState();
+        
+            
             if(copy_game.checkGameOver() == WHITE) {
                 score++;
             }
@@ -50,14 +53,16 @@ int MCTS::randomPlayouts(Reversi game) {
 
         
     }
+    
 
-    if(number_of_playouts > max_number_of_playouts) {
+    if(number_of_playouts >= max_number_of_playouts) {
         while(!playouts.empty()) {
             Reversi currentGame = playouts.front();
             playouts.pop();
             cout << "THIS IS THE D" << endl;
             currentGame.printBoard();
             currentGame.checkGameState();
+            cout << "BLACK CHIPS ARE " << currentGame.getBlackChips() << "whiteCHIPS ARE " << currentGame.getWhiteChips() << endl;
             if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
                 score++;
             }
@@ -76,8 +81,8 @@ int MCTS::randomPlayouts(Reversi game) {
 void MCTS::doMove(Reversi game) {
     vector<int> scores;
 
-    for(int i = 0; i < 1; i++) {
-        Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips());
+    for(int i = 0; i < game.potentialMoves(game.getTurn()).size(); i++) {
+        Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips(), game.getTurn());
         copy_game.placePiece(game.potentialMoves(game.getTurn())[i].x, game.potentialMoves(game.getTurn())[i].y);
         copy_game.switchTurn();
         // copy_game.printBoard();
