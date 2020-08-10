@@ -65,6 +65,7 @@ int main(){
             else{
                 moveCoords move = aiMonte.doMove(game);
                 game.placePiece(move.x,move.y);
+                game.switchTurn();
             }
             
             turn--;
