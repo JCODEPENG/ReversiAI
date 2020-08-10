@@ -18,11 +18,12 @@ class Reversi{
         int board[8][8];
         int whiteChips;
         int blackChips;
+        int turn;
     public:
         Reversi();
         Reversi(reversi_board& board, int whiteChips, int blackChips);
         vector<moveCoords> potentialMoves(int color);
-        bool placePiece(int color, int x, int y);
+        bool placePiece(int x, int y);
         int checkGameOver();
         void checkGameState();
         void printPotentialMoves(vector<moveCoords> moves);
@@ -31,4 +32,6 @@ class Reversi{
         int getWhiteChips();
         int getBlackChips();
         reversi_board& getBoard();
+        int getTurn();
+        void switchTurn();
 };

@@ -15,6 +15,7 @@ Reversi::Reversi(){
     board[3][4] = 2;
     board[4][4] = 1;
     board[4][3] = 2;
+    this->turn = BLACK;
 }
 
 Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips) {
@@ -25,6 +26,7 @@ Reversi::Reversi(reversi_board& board, int whiteChips, int blackChips) {
     }
     this->blackChips = blackChips;
     this->whiteChips = whiteChips;
+    this->turn = BLACK;
 }
 
 bool existsInPotential(int x, int y, vector<moveCoords> moves){
@@ -286,17 +288,32 @@ reversi_board& Reversi::getBoard() {
     return board;
 }
 
+int Reversi::getTurn() {
+    return turn;
+}
 
-bool Reversi::placePiece(int color, int x, int y){
+void Reversi::switchTurn() {
+    if(turn == BLACK) {
+        turn = WHITE;
+    }
+    else {
+        turn = BLACK;
+    }
+}
+
+
+bool Reversi::placePiece(int x, int y){
     bool flag = false;
     int opposite;
-    if (color == 1){
-        opposite = 2;
+
+    if(turn == BLACK) {
+        opposite = WHITE;
     }
-    else{
-        opposite = 1;
+    else {
+        opposite = BLACK;
     }
-    vector<moveCoords> availableMoves = potentialMoves(color);
+
+    vector<moveCoords> availableMoves = potentialMoves(turn);
     for (int i = 0; i < availableMoves.size(); i++){
         if (availableMoves[i].x == x && availableMoves[i].y == y){
             flag = true;
@@ -311,6 +328,7 @@ bool Reversi::placePiece(int color, int x, int y){
         //and then keep checking if the next pieces in that direction will ever be the current 
         //color... thennnn we can change the pieces in between.
         //but what im doing is im changing the pieces as I go when i search for the current color which is wrong.
+        int color = turn;
         board[x][y] = color;
         vector<int> directions;
         
