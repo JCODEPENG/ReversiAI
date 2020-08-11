@@ -88,7 +88,6 @@ int main(){
             
             if(turn == 1){
                 bool validMove;
-                cout << game.getTurn() << endl;
                 int x = -1;
                 int y = -1;
                 cout << "Player's Turn" << endl;
@@ -135,9 +134,8 @@ int main(){
                 else{
                     moveCoords move = aiMonte.doMove(game, false);
                     game.placePiece(move.x,move.y);
-                    game.switchTurn();
-                    cout << "switch " << endl;
-                    
+                    cout << "Cpu's move: " << move.x << ", " << move.y << endl;
+                    game.switchTurn();            
                 }
                 turn--;
             }
