@@ -103,9 +103,10 @@ int main(){
                     }
                 }
 
-                bool skip = game.turnSkip(turn);
+                bool skip = game.turnSkip(game.getTurn());
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
+                    game.switchTurn();
                 }
                 else{
                     validMove = game.placePiece(x,y);
@@ -126,7 +127,7 @@ int main(){
             else{
                 cout << "Cpu's turn" << endl;
                 cout << "Please allow some time for the Cpu to think" << endl;
-                bool skip = game.turnSkip(turn);
+                bool skip = game.turnSkip(game.getTurn());
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
                     game.switchTurn(); 
@@ -163,9 +164,7 @@ int main(){
             cout << "black score: " << blackChips << endl;
             cout << "white score: " << whiteChips << endl;
             cout << "------------------------------" << endl;
-
             game.printBoard();
-
             if (gameEnd >= 0){
                 cout << "------------------------------" << endl;
                 cout << "GAME OVER" << endl;
@@ -196,13 +195,14 @@ int main(){
                     cin >> y;
                     if (x == -1 || y == -1){
                         cout<< "Invalid Move. Please try again!" << endl;
+                        cout << x << y << endl;
                     }
                 }
 
-                bool skip = game.turnSkip(turn);
+                bool skip = game.turnSkip(game.getTurn());
                 if (skip){
-                    game.switchTurn(); 
                     cout << "No moves, turn skipped" << endl;
+                    game.switchTurn();
                 }
                 else{
                     validMove = game.placePiece(x,y);
@@ -223,16 +223,16 @@ int main(){
             else{
                 cout << "Cpu's turn" << endl;
                 cout << "Please allow some time for the Cpu to think" << endl;
-                bool skip = game.turnSkip(turn);
+                bool skip = game.turnSkip(game.getTurn());
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
-                    game.switchTurn();
+                    game.switchTurn(); 
                 }
                 else{
                     moveCoords move = aiMonte.doMove(game, true);
                     game.placePiece(move.x,move.y);
-                    game.switchTurn();
-                    
+                    cout << "Cpu's move: " << move.x << ", " << move.y << endl;
+                    game.switchTurn();            
                 }
                 turn--;
             }
