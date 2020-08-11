@@ -130,7 +130,6 @@ int main(){
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
                     game.switchTurn(); 
-                    turn--;
                 }
                 else{
                     moveCoords move = aiMonte.doMove(game, false);
@@ -163,8 +162,9 @@ int main(){
             int whiteChips = game.getWhiteChips();
             cout << "black score: " << blackChips << endl;
             cout << "white score: " << whiteChips << endl;
-            game.printBoard();
             cout << "------------------------------" << endl;
+
+            game.printBoard();
 
             if (gameEnd >= 0){
                 cout << "------------------------------" << endl;
@@ -226,7 +226,7 @@ int main(){
                 bool skip = game.turnSkip(turn);
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
-                    turn--;
+                    game.switchTurn();
                 }
                 else{
                     moveCoords move = aiMonte.doMove(game, true);
