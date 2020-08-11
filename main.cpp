@@ -88,11 +88,12 @@ int main(){
             
             if(turn == 1){
                 bool validMove;
+                cout << game.getTurn() << endl;
                 int x = -1;
                 int y = -1;
                 cout << "Player's Turn" << endl;
                 cout << "Potential Move Options:" << endl;
-                game.printPotentialMoves(game.potentialMoves(turn));
+                game.printPotentialMoves(game.potentialMoves(game.getTurn()));
                 while(x == -1 || y == -1){ 
                     cout<< "Enter your Move in the format from one of the following coordinates above: ";
                     cin >> x;
@@ -189,7 +190,7 @@ int main(){
                 int y = -1;
                 cout << "Player's Turn" << endl;
                 cout << "Potential Move Options:" << endl;
-                game.printPotentialMoves(game.potentialMoves(turn));
+                game.printPotentialMoves(game.potentialMoves(game.getTurn()));
                 while(x == -1 || y == -1){ 
                     cout<< "Enter your Move in the format from one of the following coordinates above: ";
                     cin >> x;
