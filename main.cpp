@@ -4,11 +4,37 @@ using namespace std;
 
 int main(){
     Reversi game;
-    MCTS aiMonte(10000);
+    MCTS aiMonte(100);
     int choice = 0;
     cout << "***********************************" << endl;
     cout << "WELCOME TO PB&J's REVERSI GAME\n";
     cout << "***********************************" << endl;
+    cout << endl;
+    cout << "In our game, the black piece is represented as the number 1.\nThe white piece is represented as the number 2." << endl;
+    cout << "A blank spot is represented as the number 0" << endl;
+    cout << endl;
+    cout << "When playing the game, please enter the input by the coordinates of a 2D array." << endl;
+    cout << "For example, for the board:" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 1 2 0 0 0" << endl;
+    cout << "0 0 0 2 1 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+
+    cout << "If your color is black and you choose the move > 5 3, the following piece would be placed as follows:" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 1 2 0 0 0" << endl;
+    cout << "0 0 0 1 1 0 0 0" << endl;
+    cout << "0 0 0 1 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    cout << "0 0 0 0 0 0 0 0" << endl;
+    
+    cout << "-----------------------" << endl;
 
     while (choice != 1 && choice != 2 && choice != 3){
         cout << "Please select from one of the following options" << endl;
