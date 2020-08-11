@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+
 #define SIZE    8
 #define BLACK   1
 #define WHITE   2

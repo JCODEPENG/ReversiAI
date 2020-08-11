@@ -1,5 +1,6 @@
 #include <queue>
 #include <cmath>
+#include <time.h>
 #include "reversi.h"
 
 using namespace std;
@@ -12,6 +13,6 @@ class MCTS {
         double mobility_heuristic(Reversi game, int AI_color);
         double corner_capture_heuristic(Reversi game, int AI_color);
     public:
-        MCTS(int max_number_of_playouts = 10000);
+        MCTS(int max_number_of_playouts = 100000);
         moveCoords doMove(Reversi game, bool activateHeuristics);
 };

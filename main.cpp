@@ -27,10 +27,11 @@ int main(){
         bool skip = game.turnSkip(game.getTurn());
         if(skip) {
             cout << "No moves, turn (" << game.getTurn() << ") skipped" << endl; 
+            game.switchTurn();
         }
         else {
             moveCoords move;
-            if(game.getTurn() == BLACK) {
+            if(game.getTurn() == WHITE) {
                 move = aiMonte.doMove(game, false);
             }
             else {

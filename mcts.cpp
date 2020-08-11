@@ -134,7 +134,9 @@ int MCTS::randomPlayouts(Reversi game, bool activateHeuristics) {
             }
         }
     }
-    
+
+    cout << "Number of playouts " << number_of_playouts << endl;
+
     if(number_of_playouts >= max_number_of_playouts) {
         while(!playouts.empty()) {
             Reversi currentGame = playouts.front();
@@ -164,7 +166,6 @@ int MCTS::randomPlayouts(Reversi game, bool activateHeuristics) {
             }
         }
     }
-
     return score;
     
 }
@@ -172,6 +173,7 @@ int MCTS::randomPlayouts(Reversi game, bool activateHeuristics) {
 moveCoords MCTS::doMove(Reversi game, bool activateHeuristics) {
     vector<int> scores;
 
+    clock_t t = clock();
     for(int i = 0; i < game.potentialMoves(game.getTurn()).size(); i++) {
         Reversi copy_game(game.getBoard(), game.getWhiteChips(), game.getBlackChips(), game.getTurn());
         copy_game.placePiece(game.potentialMoves(game.getTurn())[i].x, game.potentialMoves(game.getTurn())[i].y);
@@ -183,14 +185,14 @@ moveCoords MCTS::doMove(Reversi game, bool activateHeuristics) {
     }
     
 
-    cout << "\n--------------------SCORES----------------------" << endl;
-    for(int i = 0; i < scores.size(); i++) {
-        cout << scores[i] << endl;
-    }
-    cout << endl;
+    // cout << "\n--------------------SCORES----------------------" << endl;
+    // for(int i = 0; i < scores.size(); i++) {
+    //     cout << scores[i] << endl;
+    // }
     
     int max_index_for_move = maxIndex(scores);
-         
+    t = clock() - t;
+    cout << "Time taken: " << ((double)t)/CLOCKS_PER_SEC << endl;
 
     return game.potentialMoves(game.getTurn())[max_index_for_move];
 
