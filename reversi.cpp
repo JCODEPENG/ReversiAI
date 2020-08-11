@@ -239,7 +239,7 @@ bool Reversi::turnSkip(int color){
 
 //just printing the coordinates of potential moves
 void Reversi::printPotentialMoves(vector<moveCoords> moves){
-    cout<< "size is " << moves.size()<< endl;
+    
     for (int i = 0; i < moves.size(); i++){
         
         cout << "{" << moves[i].x << "," << moves[i].y << "}" << endl;

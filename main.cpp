@@ -62,6 +62,13 @@ int main(){
         
         while(1){
             int gameEnd = game.checkGameOver();
+            cout << "------------------------------" << endl;
+            int blackChips = game.getBlackChips();
+            int whiteChips = game.getWhiteChips();
+            cout << "black score: " << blackChips << endl;
+            cout << "white score: " << whiteChips << endl;
+            cout << "------------------------------" << endl;
+            game.printBoard();
             if (gameEnd >= 0){
                 cout << "------------------------------" << endl;
                 cout << "GAME OVER" << endl;
@@ -78,18 +85,13 @@ int main(){
                 cout << "------------------------------" << endl;
                 break;
             }
-            cout << "------------------------------" << endl;
-            int blackChips = game.getBlackChips();
-            int whiteChips = game.getWhiteChips();
-            cout << "black score: " << blackChips << endl;
-            cout << "white score: " << whiteChips << endl;
-            cout << "------------------------------" << endl;
-            game.printBoard();
+            
             if(turn == 1){
                 bool validMove;
                 int x = -1;
                 int y = -1;
                 cout << "Player's Turn" << endl;
+                cout << "Potential Move Options:" << endl;
                 game.printPotentialMoves(game.potentialMoves(turn));
                 while(x == -1 || y == -1){ 
                     cout<< "Enter your Move in the format from one of the following coordinates above: ";
@@ -97,6 +99,7 @@ int main(){
                     cin >> y;
                     if (x == -1 || y == -1){
                         cout<< "Invalid Move. Please try again!" << endl;
+                        cout << x << y << endl;
                     }
                 }
 
@@ -132,6 +135,7 @@ int main(){
                     moveCoords move = aiMonte.doMove(game, false);
                     game.placePiece(move.x,move.y);
                     game.switchTurn();
+                    cout << "switch " << endl;
                     
                 }
                 turn--;
@@ -154,6 +158,14 @@ int main(){
         
         while(1){
             int gameEnd = game.checkGameOver();
+            cout << "------------------------------" << endl;
+            int blackChips = game.getBlackChips();
+            int whiteChips = game.getWhiteChips();
+            cout << "black score: " << blackChips << endl;
+            cout << "white score: " << whiteChips << endl;
+            game.printBoard();
+            cout << "------------------------------" << endl;
+
             if (gameEnd >= 0){
                 cout << "------------------------------" << endl;
                 cout << "GAME OVER" << endl;
@@ -170,18 +182,13 @@ int main(){
                 cout << "------------------------------" << endl;
                 break;
             }
-            cout << "------------------------------" << endl;
-            int blackChips = game.getBlackChips();
-            int whiteChips = game.getWhiteChips();
-            cout << "black score: " << blackChips << endl;
-            cout << "white score: " << whiteChips << endl;
-            cout << "------------------------------" << endl;
-            game.printBoard();
+            
             if(turn == 1){
                 bool validMove;
                 int x = -1;
                 int y = -1;
                 cout << "Player's Turn" << endl;
+                cout << "Potential Move Options:" << endl;
                 game.printPotentialMoves(game.potentialMoves(turn));
                 while(x == -1 || y == -1){ 
                     cout<< "Enter your Move in the format from one of the following coordinates above: ";
