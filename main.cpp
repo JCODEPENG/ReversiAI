@@ -129,6 +129,7 @@ int main(){
                 bool skip = game.turnSkip(turn);
                 if (skip){
                     cout << "No moves, turn skipped" << endl;
+                    game.switchTurn(); 
                     turn--;
                 }
                 else{
@@ -200,6 +201,7 @@ int main(){
 
                 bool skip = game.turnSkip(turn);
                 if (skip){
+                    game.switchTurn(); 
                     cout << "No moves, turn skipped" << endl;
                 }
                 else{

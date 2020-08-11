@@ -249,7 +249,7 @@ void Reversi::printPotentialMoves(vector<moveCoords> moves){
 void Reversi::printBoard(){
     for (int i = 0; i < SIZE; i++){
         for(int j = 0; j < SIZE; j++){
-            cout << board[i][j] << " ";
+            cout << board[i][j] << endl;
         }
         cout<< endl;
     }
