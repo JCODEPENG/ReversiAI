@@ -16,7 +16,87 @@ MCTS::MCTS(int max_number_of_playouts) {
     this->max_number_of_playouts = max_number_of_playouts;
 }
 
-int MCTS::randomPlayouts(Reversi game) {
+double MCTS::coin_parity_heuristic(Reversi game, int AI_color) {
+    game.checkGameState();
+    double coinParity = 0;
+
+    if(AI_color == BLACK) {
+        coinParity = 100 * ((game.getBlackChips() - game.getWhiteChips())/(game.getBlackChips() + game.getWhiteChips()));
+    }
+    else {
+        coinParity = 100 * ((game.getWhiteChips() - game.getBlackChips())/(game.getBlackChips() + game.getWhiteChips()));
+    }
+
+    return ceil(coinParity * 100.0)/100.0;
+}
+
+double MCTS::mobility_heuristic(Reversi game, int AI_color) {
+    int opponentColor;
+    if(AI_color == BLACK) {
+        opponentColor = WHITE;
+    }
+    else {
+        opponentColor = BLACK;
+    }
+    int potentialMovesAI = game.potentialMoves(AI_color).size();
+    int potentialMovesOpponent = game.potentialMoves(opponentColor).size();
+    double mobility;
+    if((game.checkGameOver() == -1) && (potentialMovesAI+potentialMovesOpponent != 0)) {
+        mobility = 100 * ((potentialMovesAI - potentialMovesOpponent)/(potentialMovesAI + potentialMovesOpponent));
+    }
+    return ceil(mobility * 100.0)/100.0;
+}
+
+double MCTS::corner_capture_heuristic(Reversi game, int AI_color) {
+    reversi_board& copyBoard = game.getBoard();
+    int numOfBlackCorners = 0;
+    int numOfWhiteCorners = 0;
+
+    if(copyBoard[0][0] == BLACK) {
+        numOfBlackCorners++;
+    }
+    else if(copyBoard[0][0] == WHITE) {
+        numOfWhiteCorners++;
+    }
+    
+    if(copyBoard[0][7] == BLACK) {
+        numOfBlackCorners++;
+    }
+    else if(copyBoard[0][7] == WHITE) {
+        numOfWhiteCorners++;
+    }
+
+    if(copyBoard[7][0] == BLACK) {
+        numOfBlackCorners++;
+    }
+    else if(copyBoard[7][0] == WHITE) {
+        numOfWhiteCorners++;
+    }
+
+    if(copyBoard[7][7] == BLACK) {
+        numOfBlackCorners++;
+    }
+    else if(copyBoard[7][7] == WHITE) {
+        numOfWhiteCorners++;
+    }
+
+    double cornerCount;
+    if(numOfBlackCorners + numOfWhiteCorners != 0) {
+        if(AI_color == BLACK) {
+            cornerCount = 100 * ((numOfBlackCorners - numOfWhiteCorners)/(numOfBlackCorners + numOfWhiteCorners));
+        }
+        else {
+            cornerCount = 100 * ((numOfWhiteCorners - numOfBlackCorners)/(numOfBlackCorners + numOfWhiteCorners));
+        }
+    }
+    else {
+        return 0;
+    }
+
+    return ceil(cornerCount*100.0)/100.0;
+}
+
+int MCTS::randomPlayouts(Reversi game, bool activateHeuristics) {
 
     int AI;
     if(game.getTurn() == BLACK) {
@@ -42,17 +122,15 @@ int MCTS::randomPlayouts(Reversi game) {
             
             copy_game.switchTurn();
             copy_game.checkGameState();
-        
 
             if(copy_game.checkGameOver() == AI) {
-                score++;
+                score+=100;
             }
             if(copy_game.checkGameOver() == game.getTurn()) {
-                score--;
+                score-=100;
             }
             if(copy_game.checkGameOver() == -1) {
                 playouts.push(copy_game);
-                 
             }
         }
     }
@@ -63,34 +141,35 @@ int MCTS::randomPlayouts(Reversi game) {
             playouts.pop();
             currentGame.checkGameState();
 
-            if(AI == WHITE) {
-                if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
-                    score++;
+            if(!activateHeuristics) {
+                if(AI == WHITE) {
+                    if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
+                        score+=50;
+                    }
+                    if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
+                        score-=50;
+                    }
                 }
-                if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
-                    score--;
+                else {
+                    if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
+                        score+=50;
+                    }
+                    if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
+                        score-=50;
+                    }
                 }
             }
             else {
-                if(currentGame.getBlackChips() > currentGame.getWhiteChips()) {
-                    score++;
-                }
-                if(currentGame.getBlackChips() < currentGame.getWhiteChips()) {
-                    score--;
-                }
+                score += round(coin_parity_heuristic(currentGame, AI) + mobility_heuristic(currentGame, AI) + corner_capture_heuristic(currentGame, AI));
             }
-
-            
-
         }
     }
 
     return score;
     
 }
-
  
-moveCoords MCTS::doMove(Reversi game) {
+moveCoords MCTS::doMove(Reversi game, bool activateHeuristics) {
     vector<int> scores;
 
     for(int i = 0; i < game.potentialMoves(game.getTurn()).size(); i++) {
@@ -98,7 +177,7 @@ moveCoords MCTS::doMove(Reversi game) {
         copy_game.placePiece(game.potentialMoves(game.getTurn())[i].x, game.potentialMoves(game.getTurn())[i].y);
         copy_game.switchTurn();
 
-        int score = randomPlayouts(copy_game);
+        int score = randomPlayouts(copy_game, activateHeuristics);
 
         scores.push_back(score);
     }
@@ -109,7 +188,7 @@ moveCoords MCTS::doMove(Reversi game) {
         cout << scores[i] << endl;
     }
     cout << endl;
-        
+    
     int max_index_for_move = maxIndex(scores);
          
 

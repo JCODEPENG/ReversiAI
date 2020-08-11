@@ -2,8 +2,6 @@
 
 using namespace std;
 
-
-
 //initializing board
 Reversi::Reversi(){
     for (int i = 0; i < SIZE; i++){
