@@ -2,6 +2,10 @@
 #include "mcts.h"
 using namespace std;
 
+//Joshua Peng and Praneer Shrestha
+//Cmpt 310 Final Project 
+
+
 int main(){
     Reversi game;
     MCTS aiMonte(100);
