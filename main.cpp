@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
     Reversi game;
-    MCTS aiMonte(100);
+    MCTS aiMonte(10000);
     int choice = 0;
     cout << "***********************************" << endl;
     cout << "WELCOME TO PB&J's REVERSI GAME\n";
