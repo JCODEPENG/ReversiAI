@@ -45,6 +45,7 @@ int main(){
         cout << "Press 1 to play the Reversi AI that plays on random playouts" << endl;
         cout << "Press 2 to play the Reversi AI that plays on special heuristics" << endl;
         cout << "Press 3 to watch the random playouts Reversi AI vs the special heuristics  (battle of the ages) :)" << endl;
+        cout << "Disclaimers! Do not input a char/string! And when the playsouts number is high, the cpu could take a long time to make a move." << endl;
         cout << "> ";
         cin >> choice;
         if (choice != 1 && choice != 2 && choice != 3){
